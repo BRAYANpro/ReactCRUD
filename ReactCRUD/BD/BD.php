@@ -2,7 +2,7 @@
 
 $pdo=null;
 $host="localhost";
-$root="root";
+$user="admin";
 $password="root";
 $bd="tutorial_react";
 
@@ -11,7 +11,7 @@ function conectar(){
 
     try{
         $GLOBALS['pdo']=new PDO("mysql:host=".$GLOBALS['host'].";dbname=".$GLOBALS['bd']."",$GLOBALS['user'],$GLOBALS['password']);
-        $GLOBALS['pdo']->setAtribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $GLOBALS['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }catch(PDOException $e){
         print "Error!: no se puede conecatar a la BD ".$bd."<br/>";
         print "\nError!: ".$e."<br/>";
@@ -23,7 +23,6 @@ function desconectar(){
     $GLOBALS['pdo']=null;
 }
 function metodoGet($query){
-
     try{
         conectar();
         $sentencia=$GLOBALS['pdo']->prepare($query);
@@ -31,12 +30,9 @@ function metodoGet($query){
         $sentencia->execute();
         desconectar();
         return $sentencia;
-
     }catch(Exception $e){
-        die("error: ".$e);
-        
+        die("Error: ".$e);
     }
-
 }
 function metodoPost($query, $queryAutoIncrement){
 
@@ -79,20 +75,16 @@ function metodoPut($query){
 
 }
 function metodoDelete($query){
-
     try{
         conectar();
-        $sentencia=$GLOBALS['pdo']->prepare($query);     
+        $sentencia=$GLOBALS['pdo']->prepare($query);
         $sentencia->execute();
         $sentencia->closeCursor();
         desconectar();
         return $_GET['id'];
-
     }catch(Exception $e){
-        die("error: ".$e);
-        
+        die("Error: ".$e);
     }
-
 }
 
 

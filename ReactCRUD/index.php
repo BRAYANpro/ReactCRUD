@@ -1,20 +1,20 @@
+
 <?php
 include 'bd/BD.php';
 header("Access-Control-Allow-Origin: *");
 
-if($_SERVER['REQUEST_METHOD']=='GET')
-{
-    if(isset($_get['id'])){
-        $query="SELECT * from frameworks where id=".$_get["id"];
-        $resultados=metodoGet($query);
-            echo json_encode($resultados->fetch(PDO::FETCH_ASSOC));
-        
+
+if($_SERVER['REQUEST_METHOD']=='GET'){
+    if(isset($_GET['id'])){
+        $query="SELECT * from frameworks where id=".$_GET['id'];
+        $resultado=metodoGet($query);
+        echo json_encode($resultado->fetch(PDO::FETCH_ASSOC));
     }else{
-        $query="select from frameworks";
-        $resultados=metodoGet($query);
-            echo json_encode($resultados->fetchAll());
+        $query="SELECT * from frameworks";
+        $resultado=metodoGet($query);
+        echo json_encode($resultado->fetchAll()); 
     }
-    header("HTTP/1.1 200 ok");
+    header("HTTP/1.1 200 OK");
     exit();
 }
 
@@ -23,8 +23,8 @@ if($_POST['METHOD']=='POST'){
     $nombre=$_POST['nombre'];
     $lanzamiento=$_POST['lanzamiento'];
     $desarrollador=$_POST['desarrollador'];
-   $query="INSERT into frameworks(nombre, lanzamiento, desarrollador) values('$_nombre', '$lanzamiento', '$_desarrollador')";
-   $queryAutoIncrement="select MAX(id) as id from frameworks";
+   $query="INSERT into frameworks(nombre, lanzamiento, desarrollador) values('$nombre', '$lanzamiento', '$desarrollador')";
+   $queryAutoIncrement="SELECT MAX(id) as id from frameworks";
    $resultados=metodoPost($query, $queryAutoIncrement);
    echo json_encode($resultados);
    header("HTTP/1.1 200 ok");
@@ -36,16 +36,16 @@ if($_POST['METHOD']=='PUT'){
     $nombre=$_POST['nombre'];
     $lanzamiento=$_POST['lanzamiento'];
     $desarrollador=$_POST['desarrollador'];
-   $query="UPDATE into frameworks SET nombre = '$_nombre', lanzamiento ='$lanzamiento', desarrollador = '$_desarrollador' where id='$id'";
-   $resultados=metodoPut($query);
-   echo json_encode($resultados);
-   header("HTTP/1.1 200 ok");
+    $query="UPDATE frameworks SET nombre='$nombre', lanzamiento='$lanzamiento', desarrollador='$desarrollador' WHERE id='$id'";
+    $resultado=metodoPut($query);
+    echo json_encode($resultado);
+    header("HTTP/1.1 200 OK");
     exit();
 }
 if($_POST['METHOD']=='DELETE'){
     unset($_POST['METHOD']);
     $id=$_GET['id'];
-   $query="DELETE into frameworks where id='$id'";
+   $query="DELETE FROM frameworks where id='$id'";
    $resultados=metodoDelete($query);
    echo json_encode($resultados);
    header("HTTP/1.1 200 ok");
